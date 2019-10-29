@@ -30,3 +30,11 @@ towards **target** every time the counter **tick** updates.
 Using this method the graph of PWM vs time would look like this:
 
 ![Exponential change over time using ticks and targets](./Images/exponential_change_step.png)
+
+
+# Exponential formula used
+
+    a*e^(b*x) + c
+
+where **a**, **b**, **c** are constants used to change the graph of the exponential change
+in PWM. 
