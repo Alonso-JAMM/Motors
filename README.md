@@ -15,3 +15,4 @@ longer I would like increase the PWM faster. That is, slow rate of change at fir
 increase said rate of change as time passes.
 
 So I though about a graph that looked more or less like this:
+![Exponential change over time](./Images/exponential_change.png)
