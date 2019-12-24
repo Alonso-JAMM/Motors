@@ -1,6 +1,6 @@
-#include "./PWM_Changer.h"
+#include "PWM_Changer.h"
 
-PWMChanger::PWMChanger() 
+PWMChanger::PWMChanger() : linFunction(&tick)
 {
     
 }
@@ -28,6 +28,9 @@ int PWMChanger::getTarget()
     return this->target;
 }
 
+
+
+
 /**
  * Setters for the variables used in this class
 **/
@@ -49,4 +52,10 @@ void PWMChanger::setCurrentPWM(float currentPWM)
 void PWMChanger::setTarget(int target)
 {
     this->target = target;
+}
+
+
+void PWMChanger::setTick(int tick)
+{
+    this->tick = tick;
 }
