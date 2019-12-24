@@ -39,3 +39,12 @@ void LinearF::setB(float b)
 {
     this->b = b;
 }
+
+/*
+ *  Main function of the class
+ * we get a new PWM value by calling this function
+ */
+int LinearF::update()
+{
+    return a*(*x) + b;
+}

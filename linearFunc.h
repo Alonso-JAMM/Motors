@@ -23,6 +23,8 @@ public:
     float getB();
     void setA(float);
     void setB(float);
+    // calculates new PWM value
+    int update();
 };
 
 
