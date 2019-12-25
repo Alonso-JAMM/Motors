@@ -41,10 +41,38 @@ void LinearF::setB(float b)
 }
 
 /*
- *  Main function of the class
- * we get a new PWM value by calling this function
+ * we get a new PWM value by calling this function (The new PWM is an increase
+ * from the old PWM)
  */
-int LinearF::update()
+float LinearF::increase(float currentPWM)
 {
+    if (a < 0)
+    {
+        a = -a; // we want to increase the PWM value!
+    }
+    if (*x == 0)
+    {
+        b = currentPWM;
+    }
+        
+    return a*(*x) + b;
+}
+
+
+/*
+ * we get a new PWM value by calling this functions (new PWM is an decrease 
+ * from the old PWM)
+ */
+float LinearF::decrease(float currentPWM)
+{
+    if (a > 0)
+    {
+        a = -a; // we want to decrease the PWM value!
+    }
+    if (*x == 0)
+    {
+        b = currentPWM;
+    }
+    
     return a*(*x) + b;
 }

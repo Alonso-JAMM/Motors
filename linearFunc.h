@@ -16,6 +16,7 @@ private:
     float b = 0;
     int* x;     // Points to the tick of instance of PWMChanger class
 public:
+    LinearF();
     LinearF(int*);
     LinearF(float, float, int*);
     // getters and setters of variables
@@ -23,8 +24,9 @@ public:
     float getB();
     void setA(float);
     void setB(float);
-    // calculates new PWM value
-    int update();
+    // calculates new PWM value when we want to increase or decrease the PWM
+    float increase(float);
+    float decrease(float);
 };
 
 
