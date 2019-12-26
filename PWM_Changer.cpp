@@ -2,7 +2,8 @@
 #include <cmath>
 
 PWMChanger::PWMChanger(const int type):
-linFunction(&tick)
+linFunction(&tick),
+expFunction(&tick)
 {
     // setting up the function used to change the PWM
     this->functionType = type;
@@ -134,15 +135,17 @@ void PWMChanger::skipRegion()
             currentPWM = highSkip;
         }
         // Now we set up functions 
-        // the vertical shift changes, but not the ticks
-        // and set the tick counter to corresponding value
+        // the vertical shift changes
         if (functionType == 0)
         {
             linFunction.setB(currentPWM);
-            // the plus one is to not repeat the same value twice when passing
-            // thgrough the skip region
-            tick = linFunction.calculateX(currentPWM) + 1
         }
+        else if (functionType == 1)
+        {
+            expFunction.setD(currentPWM);
+        }
+        // ticks increase by one since currentPWM moved
+        tick++;
     }
 }
 
@@ -176,6 +179,10 @@ void PWMChanger::increasePWM()
     {        
         newPWM = linFunction.increase(currentPWM);
     }
+    else if (functionType == 1)
+    {
+        newPWM = expFunction.increase(currentPWM);
+    }
     
     // check if the new PWM is too close to the target
     // if it is too close, then we set currentPWM to target
@@ -202,6 +209,10 @@ void PWMChanger::decreasePWM()
     if (functionType == 0)
     {
         newPWM = linFunction.decrease(currentPWM);
+    }
+    else if (functionType == 1)
+    {
+        newPWM = expFunction.decrease(currentPWM);
     }
     
     if (isNewPWMClose(newPWM))

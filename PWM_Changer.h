@@ -1,7 +1,7 @@
 #ifndef PWM_Changer_h
 #define PWM_Changer_h
 #include "linearFunc.h"
-//#include "functions.h"
+#include "exponentialFunc.h"
 
 
 /*
@@ -54,6 +54,7 @@ public:
     // Speed changing functions
     // Note that the user may need to change the constant values of the function
     LinearF linFunction;    // Linear function
+    ExpF expFunction;       // Exponential function
 };
 
 
