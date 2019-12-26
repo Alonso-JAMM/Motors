@@ -36,7 +36,15 @@ int PWMChanger::getTick()
     return this->tick;
 }
 
+int PWMChanger::getLowSkip()
+{
+    return this->lowSkip;
+}
 
+int PWMChanger::getHighSkip()
+{
+    return this->highSkip;
+}
 
 /**
  * Setters for the variables used in this class
@@ -61,10 +69,19 @@ void PWMChanger::setTarget(int target)
     this->target = targetLimiter(target);
 }
 
-
 void PWMChanger::setTick(int tick)
 {
     this->tick = tick;
+}
+
+void PWMChanger::setLowSkip(int lowSkip)
+{
+    this->lowSkip = lowSkip;
+}
+
+void PWMChanger::setHighSkip(int highSkip)
+{
+    this->highSkip = highSkip;
 }
 
 
@@ -74,17 +91,58 @@ void PWMChanger::setTick(int tick)
  */
 int PWMChanger::targetLimiter(int target)
 {
+    int newTarget;
+    // maximum limitters
     if (target < minPWM)
     {
-        return minPWM;
+        newTarget = minPWM;
     }
     else if (target > maxPWM)
     {
-        return maxPWM;
+        newTarget = maxPWM;
     }
     else
     {
-        return target;
+        newTarget = target;
+    }
+    
+    // skip region limitters
+    // we don't want target inside the skip region
+    if ((target > lowSkip) && (target < highSkip))
+    {
+        newTarget = lowSkip;
+    }
+    
+    return newTarget;
+}
+
+/*
+ * Skips over the skip region (unwanted region where PWM is too close to "OFF")
+ * Note that this function only works with currentPWM
+ */
+void PWMChanger::skipRegion()
+{
+    if ((currentPWM > lowSkip) && (currentPWM < highSkip))
+    {
+        // Decreasing PWM
+        if (target < currentPWM)
+        {
+            currentPWM = lowSkip;
+        }
+        else 
+        {
+            currentPWM = highSkip;
+        }
+        // Now we set up functions 
+        // the vertical shift changes, but not the ticks
+        // and set the tick counter to corresponding value
+        if (functionType == 0)
+        {
+            linFunction.setB(currentPWM);
+            // the plus one is to not repeat the same value twice when passing
+            // thgrough the skip region
+            tick = linFunction.calculateX(currentPWM) + 1
+        }
     }
 }
 
@@ -106,7 +164,6 @@ bool PWMChanger::isNewPWMClose(float newPWM)
     }
 }
 
-
 /*
  * Increaes the value of currentPWM depending on the type of the function
  */
@@ -120,7 +177,7 @@ void PWMChanger::increasePWM()
         newPWM = linFunction.increase(currentPWM);
     }
     
-    // Now we check if the new PWM is too close to the target
+    // check if the new PWM is too close to the target
     // if it is too close, then we set currentPWM to target
     if (isNewPWMClose(newPWM))
     {
@@ -164,7 +221,6 @@ void PWMChanger::decreasePWM()
  */
 void PWMChanger::update()
 {
-
     if (currentPWM < target)
     {
         increasePWM();
@@ -174,9 +230,10 @@ void PWMChanger::update()
     {
         decreasePWM();
     }
-   
-   // Just to make sure that we set ticks to zero when PWM reaches the target
-   if (currentPWM == target)
+    
+    skipRegion();
+    // Just to make sure that we set ticks to zero when PWM reaches the target
+    if (currentPWM == target)
     {
         tick = 0;
     }

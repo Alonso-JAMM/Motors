@@ -76,3 +76,11 @@ float LinearF::decrease(float currentPWM)
     
     return a*(*x) + b;
 }
+
+/*
+ * Get x value to corresponging function output
+ */
+float LinearF::calculateX(float y)
+{
+    return (1/a)*(y-b);
+}

@@ -12,7 +12,7 @@ class LinearF
 {
 private:
     // variables
-    float a = 5;
+    float a = 5.9;
     float b = 0;
     int* x;     // Points to the tick of instance of PWMChanger class
 public:
@@ -27,6 +27,7 @@ public:
     // calculates new PWM value when we want to increase or decrease the PWM
     float increase(float);
     float decrease(float);
+    float calculateX(float);
 };
 
 

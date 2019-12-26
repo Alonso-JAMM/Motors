@@ -16,16 +16,19 @@ class PWMChanger
 {
 private:
     // variables
-    float minPWM = -255;
-    float maxPWM = 255;
+    int minPWM = -255;
+    int maxPWM = 255;
     float currentPWM = 0.0;
-    float target = 0;
+    int target = 0;
+    int lowSkip = -30;
+    int highSkip = 30;
     int tick = 0;
     int funcType;
     int functionType;
     void increasePWM();
     void decreasePWM();
     bool isNewPWMClose(float);
+    void skipRegion();
 public:
     PWMChanger(const int type = 0); // Constructor
     // getters and setters for the variables
@@ -35,11 +38,15 @@ public:
     int getTarget();
     int getFuncType();
     int getTick();
+    int getLowSkip();
+    int getHighSkip();
     void setMinPWM(int);
     void setMaxPWM(int);
     void setCurrentPWM(float);
     void setTarget(int);
     void setTick(int);
+    void setLowSkip(int);
+    void setHighSkip(int);
     int targetLimiter(int);
     // gets new PWM
     void update();
