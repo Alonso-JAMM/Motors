@@ -1,5 +1,6 @@
 #include "PWM_Changer.h"
 #include <cmath>
+#include <iostream>
 
 PWMChanger::PWMChanger(const int type):
 linFunction(&tick),
@@ -68,6 +69,8 @@ void PWMChanger::setCurrentPWM(float currentPWM)
 void PWMChanger::setTarget(int target)
 {
     this->target = targetLimiter(target);
+    // ticks reseted when new target is set
+    this->tick = 0;
 }
 
 void PWMChanger::setTick(int tick)
@@ -144,8 +147,6 @@ void PWMChanger::skipRegion()
         {
             expFunction.setD(currentPWM);
         }
-        // ticks increase by one since currentPWM moved
-        tick++;
     }
 }
 
@@ -189,12 +190,10 @@ void PWMChanger::increasePWM()
     if (isNewPWMClose(newPWM))
     {
         currentPWM = target;
-        tick = 0;   // Reset ticks
     }
     else
     {
         currentPWM = newPWM;
-        tick++;
     }
 }
 
@@ -218,12 +217,10 @@ void PWMChanger::decreasePWM()
     if (isNewPWMClose(newPWM))
     {
         currentPWM = target;
-        tick = 0;
     }
     else
     {
         currentPWM = newPWM;
-        tick++;
     }
 }
 
@@ -231,7 +228,7 @@ void PWMChanger::decreasePWM()
  * Gets a new PWM value towards target 
  */
 void PWMChanger::update()
-{
+{   
     if (currentPWM < target)
     {
         increasePWM();
@@ -243,9 +240,8 @@ void PWMChanger::update()
     }
     
     skipRegion();
-    // Just to make sure that we set ticks to zero when PWM reaches the target
-    if (currentPWM == target)
-    {
-        tick = 0;
-    }
+    //std::cout << "    " << currentPWM << " " << tick << std::endl;
+    
+    // new tick after each iteration is run (until new target is set)
+    tick++;
 }
