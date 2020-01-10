@@ -1,6 +1,4 @@
 #include "PWM_Changer.h"
-#include <cmath>
-#include <iostream>
 
 PWMChanger::PWMChanger(const int type):
 linFunction(&tick),
