@@ -46,6 +46,11 @@ int PWMChanger::getHighSkip()
     return this->highSkip;
 }
 
+int PWMChanger::getFunctionType()
+{
+    return this->functionType;
+}
+
 /**
  * Setters for the variables used in this class
 **/
@@ -84,6 +89,11 @@ void PWMChanger::setLowSkip(int lowSkip)
 void PWMChanger::setHighSkip(int highSkip)
 {
     this->highSkip = highSkip;
+}
+
+void PWMChanger::setFunctionType(int funtionType)
+{
+    this->functionType = functionType;
 }
 
 

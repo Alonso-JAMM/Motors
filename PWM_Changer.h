@@ -8,7 +8,8 @@
  * There can be many different PWM changing functions so each one will be
  * represented by a number:
  *
- *  0 - Linear Function: It will change the PWM in a linear manner 
+ *  0 - Linear Function: It will change the PWM in a linear manner
+ *  1 - Exponential Function: It will change the PWM in an exponential manner 
  */
 
 
@@ -40,6 +41,7 @@ public:
     int getTick();
     int getLowSkip();
     int getHighSkip();
+    int getFunctionType();
     void setMinPWM(int);
     void setMaxPWM(int);
     void setCurrentPWM(float);
@@ -47,6 +49,7 @@ public:
     void setTick(int);
     void setLowSkip(int);
     void setHighSkip(int);
+    void setFunctionType(int);
     int targetLimiter(int);
     // gets new PWM
     void update();
