@@ -22,7 +22,11 @@ int PWMChanger::getMaxPWM()
 }
 
 float PWMChanger::getCurrentPWM()
-{
+{   
+    if (currentPWM > lowSkip && currentPWM < highSkip)
+    {
+        currentPWM = 0;
+    }
     return this->currentPWM;
 }
 
