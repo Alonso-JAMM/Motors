@@ -95,9 +95,9 @@ void PWMChanger::setHighSkip(int highSkip)
     this->highSkip = highSkip;
 }
 
-void PWMChanger::setFunctionType(int funtionType)
+void PWMChanger::setFunctionType(int newFuntionType)
 {
-    this->functionType = functionType;
+    this->functionType = newFuntionType;
 }
 
 
